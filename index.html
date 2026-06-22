@@ -42,22 +42,26 @@
     </div>
 
     <div class="match-container" id="matchContainer" style="display: none;">
+        <h2>Squadre in Corso:</h2>
+        <div class="team">
+            <label for="team1Name">Squadra 1:</label>
+            <span id="team1Name"></span>
+        </div>
+        <div class="team">
+            <label for="team2Name">Squadra 2:</label>
+            <span id="team2Name"></span>
+        </div>
+        
         <div class="field">
             <!-- Campo da Calcio -->
             <img src="https://i.imgur.com/7SxZkQ3.jpg" alt="Campo da Calcio">
-            <div id="team1Players" class="grid grid-cols-2 gap-4"></div>
-            <div id="team2Players" class="grid grid-cols-2 gap-4"></div>
         </div>
-        <div class="ball" id="ball"></div>
         <div id="matchLog" class="overflow-y-auto h-60"></div>
-        <button id="endMatchBtn" onclick="endMatch()">Fine Partita</button>
     </div>
 
     <div class="end-message-container" id="endMessageContainer" style="display: none;">
         <h2 id="endMessage"></h2>
         <button onclick="resetGame()">Nuova Partita</button>
     </div>
-
-    <script src="main.js" defer></script>
 </body>
 </html>
