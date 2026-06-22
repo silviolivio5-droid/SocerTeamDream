@@ -12,15 +12,11 @@ function startGame() {
 function addPlayer(team) {
     const playerNameInput = team === 1 ? document.getElementById('playerName1') : document.getElementById('playerName2');
     const grid = team === 1 ? document.querySelector('#team1Players') : document.querySelector('#team2Players');
-    const playerCount = grid.children.length;
 
-    if (playerCount < 11) {
-        const playerName = playerNameInput.value;
-        const playerNumber = playerCount + 1;
-
+    if (grid.children.length < 11) {
         const playerDiv = document.createElement('div');
         playerDiv.className = 'player';
-        playerDiv.textContent = `${playerNumber}: ${playerName}`;
+        playerDiv.textContent = playerNameInput.value;
         grid.appendChild(playerDiv);
 
         if (team === 1) {
@@ -41,6 +37,10 @@ function startMatch() {
 
     const team1Name = document.getElementById('playerName1').value;
     const team2Name = document.getElementById('playerName2').value;
+
+    // Mostra le squadre nella schermata di partita in corso
+    document.getElementById('team1Name').textContent = team1Name;
+    document.getElementById('team2Name').textContent = team2Name;
 
     // Simulazione della partita
     let matchLog = '';
