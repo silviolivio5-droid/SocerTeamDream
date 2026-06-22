@@ -4,9 +4,15 @@ let ballPosition = { x: 400, y: 300 };
 let isGameRunning = false;
 let interval;
 
-function startGame() {
+function startGame(mode) {
     document.getElementById('home').hidden = true;
     document.getElementById('game').hidden = false;
+
+    if (mode === 'single') {
+        document.querySelector('.btn-primary').classList.add('btn-disabled');
+        document.querySelector('.btn-disabled').classList.remove('btn-disabled', 'bg-green-500', 'text-white');
+        document.querySelector('.btn-disabled').innerText = 'In progress...';
+    }
 }
 
 function addPlayer(slot, team) {
@@ -17,20 +23,8 @@ function addPlayer(slot, team) {
         document.getElementById(`${team}Player${slot}`).innerHTML = `${logoElement}<br>${playerName}`;
         if (team === 'team1') {
             team1[slot - 1] = { name: playerName, logo: playerLogo };
-            const playerElement = document.createElement('div');
-            playerElement.classList.add('player');
-            playerElement.innerHTML = `<span class="bg-blue-500 text-white font-bold">${slot}</span>`;
-            playerElement.style.left = `${400 - 20}px`;
-            playerElement.style.top = `${300 - 20}px`;
-            document.getElementById('team1Players').appendChild(playerElement);
         } else {
             team2[slot - 1] = { name: playerName, logo: playerLogo };
-            const playerElement = document.createElement('div');
-            playerElement.classList.add('player');
-            playerElement.innerHTML = `<span class="bg-red-500 text-white font-bold">${slot}</span>`;
-            playerElement.style.left = `${400 + 20}px`;
-            playerElement.style.top = `${300 - 20}px`;
-            document.getElementById('team2Players').appendChild(playerElement);
         }
         checkAllPlayersAdded();
     }
