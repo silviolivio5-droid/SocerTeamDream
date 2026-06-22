@@ -1,67 +1,43 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gioco Calcistica Sandbox</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="main.js" defer></script>
+    <title>Simulatore di Calcio</title>
+    <link rel="manifest" href="/manifest.json">
+    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="home-container" id="homeContainer">
-        <h1 class="title">Gioco Calcistica Sandbox</h1>
-        <div class="btn-container">
-            <button class="btn btn-primary" onclick="startGame()">Partita Singola</button>
-            <button class="btn" disabled> Torneo </button>
-            <button class="btn" disabled> Amichevole </button>
-        </div>
-    </div>
+    <header>
+        <h1>Simulatore di Calcio</h1>
+    </header>
 
-    <div class="game-container" id="gameContainer" style="display: none;">
-        <h2>Crea la Squadra Giocatore</h2>
-        <div class="team-editor">
-            <label for="playerName1">Nome Squadra:</label>
-            <input type="text" id="playerName1" required>
-            <button onclick="addPlayer(1)">Aggiungi Giocatore</button>
-            <div class="grid grid-cols-2 gap-4 overflow-y-auto h-60">
-                <!-- Giocatori Squadra Giocatore -->
-            </div>
+    <main id="app">
+        <div id="home">
+            <form>
+                <label for="teamName">Nome Squadra Proproia:</label>
+                <input type="text" id="teamName" name="teamName"><br><br>
+
+                <label for="opponentTeamName">Nome Squadra Avversaria:</label>
+                <input type="text" id="opponentTeamName" name="opponentTeamName"><br><br>
+
+                <button type="button" onclick="startGame()">Gioca</button>
+            </form>
         </div>
 
-        <h2>Crea la Squadra Avversaria</h2>
-        <div class="team-editor">
-            <label for="playerName2">Nome Squadra:</label>
-            <input type="text" id="playerName2" required>
-            <button onclick="addPlayer(2)">Aggiungi Giocatore</button>
-            <div class="grid grid-cols-2 gap-4 overflow-y-auto h-60">
-                <!-- Giocatori Squadra Avversaria -->
-            </div>
+        <div id="gameScreen" style="display: none;">
+            <h2>Partita in Corso...</h2>
+            <p id="matchComment"></p>
+            <ul id="goalsList"></ul>
+            <button onclick="endGame()">Fine Partita</button>
         </div>
 
-        <button id="startMatch" disabled onclick="startMatch()">Inizia Partita</button>
-    </div>
-
-    <div class="match-container" id="matchContainer" style="display: none;">
-        <h2>Squadre in Corso:</h2>
-        <div class="team">
-            <label for="team1Name">Squadra 1:</label>
-            <span id="team1Name"></span>
+        <div id="resultScreen" style="display: none;">
+            <h2>Risultato della Partita:</h2>
+            <p id="finalResult"></p>
+            <button onclick="goBackToHome()">Torna alla Home</button>
         </div>
-        <div class="team">
-            <label for="team2Name">Squadra 2:</label>
-            <span id="team2Name"></span>
-        </div>
-        
-        <div class="field">
-            <!-- Campo da Calcio -->
-            <img src="https://i.imgur.com/7SxZkQ3.jpg" alt="Campo da Calcio">
-        </div>
-        <div id="matchLog" class="overflow-y-auto h-60"></div>
-    </div>
-
-    <div class="end-message-container" id="endMessageContainer" style="display: none;">
-        <h2 id="endMessage"></h2>
-        <button onclick="resetGame()">Nuova Partita</button>
-    </div>
+    </main>
 </body>
 </html>
