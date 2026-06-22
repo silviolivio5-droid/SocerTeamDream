@@ -1,87 +1,65 @@
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('startGame').onclick = startGame;
-    document.getElementById('startMatch').onclick = startMatch;
-    document.getElementById('endMatchBtn').onclick = endMatch;
-});
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco Calcistica Sandbox</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="Main.js" defer></script>
+</head>
+<body>
+    <div class="home-container" id="homeContainer">
+        <h1 class="title">Gioco Calcistica Sandbox</h1>
+        <div class="btn-container">
+            <button class="btn btn-primary" id="startGameBtn">Partita Singola</button>
+            <button class="btn btn-disabled" disabled> Torneo </button>
+            <button class="btn btn-disabled" disabled> Amichevole </button>
+        </div>
+    </div>
 
-function startGame() {
-    document.getElementById('homeContainer').style.display = 'none';
-    document.getElementById('gameContainer').style.display = 'block';
-}
+    <div class="game-container" id="gameContainer" style="display: none;">
+        <h2>Crea la Squadra Giocatore</h2>
+        <div class="team-editor">
+            <label for="playerName1">Nome Squadra:</label>
+            <input type="text" id="playerName1" required placeholder="Es. AC Campagnola">
+            <button onclick="addPlayer(1)">Aggiungi Giocatore</button>
+            <div id="team1Players" class="player-grid"></div>
+        </div>
 
-function addPlayer(team) {
-    const playerNameInput = team === 1 ? document.getElementById('playerName1') : document.getElementById('playerName2');
-    const grid = team === 1 ? document.querySelector('#team1Players') : document.querySelector('#team2Players');
+        <h2>Crea la Squadra Avversaria</h2>
+        <div class="team-editor">
+            <label for="playerName2">Nome Squadra:</label>
+            <input type="text" id="playerName2" required placeholder="Es. Real Sbronzi">
+            <button onclick="addPlayer(2)">Aggiungi Giocatore</button>
+            <div id="team2Players" class="player-grid"></div>
+        </div>
 
-    if (grid.children.length < 11) {
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'player';
-        playerDiv.textContent = playerNameInput.value;
-        grid.appendChild(playerDiv);
+        <button id="startMatch" disabled>Inizia Partita</button>
+    </div>
 
-        if (team === 1) {
-            // Aggiungi logica per il modulo tattico e la posizione del giocatore
-        }
+    <div class="match-container" id="matchContainer" style="display: none;">
+        <h2>Squadre in Corso:</h2>
+        <div class="team">
+            <label>Squadra 1:</label>
+            <span id="team1Name"></span>
+        </div>
+        <div class="team">
+            <label>Squadra 2:</label>
+            <span id="team2Name"></span>
+        </div>
+        
+        <div class="field">
+            <img src="https://i.imgur.com/7SxZkQ3.jpg" alt="Campo da Calcio">
+        </div>
+        
+        <pre id="matchLog" style="background: #222; color: #fff; padding: 10px; border-radius: 5px; max-height: 250px; overflow-y: auto; width: 100%; font-family: monospace; text-align: left;"></pre>
+        
+        <button id="endMatchBtn" class="btn btn-primary">Fine Partita (Vedi Risultato)</button>
+    </div>
 
-        if (grid.children.length === 11) {
-            document.getElementById('startMatch').disabled = false;
-        }
-    } else {
-        alert('Non puoi aggiungere più di 11 giocatori!');
-    }
-}
-
-function startMatch() {
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('matchContainer').style.display = 'block';
-
-    const team1Name = document.getElementById('playerName1').value;
-    const team2Name = document.getElementById('playerName2').value;
-
-    // Mostra le squadre nella schermata di partita in corso
-    document.getElementById('team1Name').textContent = team1Name;
-    document.getElementById('team2Name').textContent = team2Name;
-
-    // Simulazione della partita
-    let matchLog = '';
-    for (let minute = 0; minute <= 90; minute++) {
-        matchLog += `${minute}' - ${getRandomEvent(team1Name, team2Name)}\n`;
-    }
-
-    document.getElementById('matchLog').textContent = matchLog;
-}
-
-function endMatch() {
-    const result = Math.random() < 0.5 ? 'Vittoria' : 'Sconfitta';
-    document.getElementById('endMessageContainer').style.display = 'block';
-    document.getElementById('endMessage').textContent = `Partita Conclusa: ${result}`;
-    document.getElementById('matchContainer').style.display = 'none';
-}
-
-function resetGame() {
-    document.getElementById('homeContainer').style.display = 'block';
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('matchContainer').style.display = 'none';
-    document.getElementById('endMessageContainer').style.display = 'none';
-
-    // Resetta tutti i campi
-    document.getElementById('playerName1').value = '';
-    document.getElementById('playerName2').value = '';
-    document.querySelector('#team1Players').innerHTML = '';
-    document.querySelector('#team2Players').innerHTML = '';
-    document.getElementById('startMatch').disabled = true;
-}
-
-function getRandomEvent(team1Name, team2Name) {
-    const events = [
-        `${team1Name} ha segnato un gol!`,
-        `${team2Name} ha segnato un gol!`,
-        'Fallimento del portiere!',
-        'Assist del giocatore!',
-        'Scontro violento!',
-        'Penalità!',
-        'Ricostruzione!'
-    ];
-
-    return events[Math.floor(Math.random() * events.length)];
-}
+    <div class="end-message-container" id="endMessageContainer" style="display: none;">
+        <h2 id="endMessage"></h2>
+        <button onclick="resetGame()">Nuova Partita</button>
+    </div>
+</body>
+</html>
