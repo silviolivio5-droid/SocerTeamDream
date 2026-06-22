@@ -93,38 +93,6 @@ body {
     width: 100%;
     height: auto;
 }
-#team1Players, #team2Players {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-#team1Players {
-    top: 0;
-    left: 0;
-}
-#team2Players {
-    bottom: 0;
-    right: 0;
-}
-.player {
-    background-color: #f7cac9;
-    color: black;
-    border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-}
-.ball {
-    position: absolute;
-    width: 2rem;
-    height: 2rem;
-    background-color: #ff6b6b;
-    border-radius: 50%;
-}
 
 /* End Game Message */
 #endMessage {
