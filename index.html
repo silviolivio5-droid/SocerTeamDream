@@ -3,101 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulatore Calcistica Sandbox</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .home-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff6b6b 0%, #f7cac9 100%);
-        }
-        .title {
-            font-size: 4rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .btn-container {
-            margin-top: 2rem;
-        }
-        .btn {
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            cursor: pointer;
-            border: none;
-            border-radius: 0.375rem;
-            transition: transform 0.3s, box-shadow 0.3s ease;
-        }
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        .btn-primary {
-            background-color: #f7cac9;
-            color: black;
-        }
-        .btn-disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-    </style>
+    <title>Gioco Calcistica Sandbox</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
 </head>
-<body class="bg-gray-100 text-center p-4">
-    <div id="home" class="home-container">
-        <h1 class="title">Simulatore Calcistica Sandbox</h1>
+<body>
+    <div class="home-container" id="homeContainer">
+        <h1 class="title">Gioco Calcistica Sandbox</h1>
         <div class="btn-container">
-            <button onclick="startGame('single')" class="btn btn-primary">Partita Singola</button>
-            <button disabled class="btn btn-disabled">Torneo</button>
-            <button disabled class="btn btn-disabled">Amichevole</button>
+            <button class="btn btn-primary" onclick="startGame()">Partita Singola</button>
+            <button class="btn" disabled> Torneo </button>
+            <button class="btn" disabled> Amichevole </button>
         </div>
     </div>
 
-    <!-- Game Page -->
-    <div id="game" hidden class="mb-8">
-        <h2 class="text-xl mb-4">Crea la tua Squadra</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div id="team1" class="bg-white p-4 shadow-lg rounded">
-                <h3>Squadra Giocatore</h3>
-                <input type="text" id="team1Name" placeholder="Nome Squadra" class="w-full mb-2 px-2 py-1 border rounded">
-                <input type="url" id="team1Logo" placeholder="URL Logo (opzionale)" class="w-full mb-4 px-2 py-1 border rounded">
-                <div class="flex flex-wrap justify-center mb-4">
-                    <!-- Player Slots -->
-                    <button onclick="addPlayer(1, 'team1')" class="player rounded-full w-8 h-8 mr-2">1</button>
-                    <button onclick="addPlayer(2, 'team1')" class="player rounded-full w-8 h-8 mr-2">2</button>
-                    <!-- ... repeat for 10 more buttons ... -->
-                </div>
-            </div>
-            <div id="team2" class="bg-white p-4 shadow-lg rounded">
-                <h3>Squadra Avversaria</h3>
-                <input type="text" id="team2Name" placeholder="Nome Squadra" class="w-full mb-2 px-2 py-1 border rounded">
-                <input type="url" id="team2Logo" placeholder="URL Logo (opzionale)" class="w-full mb-4 px-2 py-1 border rounded">
-                <div class="flex flex-wrap justify-center mb-4">
-                    <!-- Player Slots -->
-                    <button onclick="addPlayer(1, 'team2')" class="player rounded-full w-8 h-8 mr-2">1</button>
-                    <button onclick="addPlayer(2, 'team2')" class="player rounded-full w-8 h-8 mr-2">2</button>
-                    <!-- ... repeat for 10 more buttons ... -->
-                </div>
+    <div class="game-container" id="gameContainer" style="display: none;">
+        <h2>Crea la Squadra Giocatore</h2>
+        <div class="team-editor">
+            <label for="playerName1">Nome Squadra:</label>
+            <input type="text" id="playerName1" required>
+            <button onclick="addPlayer(1)">Aggiungi Giocatore</button>
+            <div class="grid grid-cols-2 gap-4 overflow-y-auto h-60">
+                <!-- Giocatori Squadra Giocatore -->
             </div>
         </div>
-        <button id="startMatch" hidden class="px-4 py-2 bg-green-500 text-white rounded btn-start">Inizia Partita</button>
+
+        <h2>Crea la Squadra Avversaria</h2>
+        <div class="team-editor">
+            <label for="playerName2">Nome Squadra:</label>
+            <input type="text" id="playerName2" required>
+            <button onclick="addPlayer(2)">Aggiungi Giocatore</button>
+            <div class="grid grid-cols-2 gap-4 overflow-y-auto h-60">
+                <!-- Giocatori Squadra Avversaria -->
+            </div>
+        </div>
+
+        <button id="startMatch" disabled onclick="startMatch()">Inizia Partita</button>
     </div>
 
-    <!-- Match Page -->
-    <div id="match" hidden class="mb-8">
-        <h2 class="text-xl mb-4">Cronaca della Partita</h2>
-        <div id="matchLog" class="bg-white p-4 shadow-lg rounded h-60 overflow-y-auto"></div>
-        <button id="endMatch" hidden class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 mt-4">Fine Partita</button>
-    </div>
-
-    <!-- Field -->
-    <div id="field" class="hidden field">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Football_field.svg/2560px-Football_field.svg.png" alt="Field" style="width: 100%; height: auto;">
-        <div id="team1Players"></div>
-        <div id="team2Players"></div>
+    <div class="match-container" id="matchContainer" style="display: none;">
+        <div class="field">
+            <!-- Campo da Calcio -->
+            <img src="https://i.imgur.com/7SxZkQ3.jpg" alt="Campo da Calcio">
+            <div id="team1Players" class="grid grid-cols-2 gap-4"></div>
+            <div id="team2Players" class="grid grid-cols-2 gap-4"></div>
+        </div>
         <div class="ball" id="ball"></div>
+        <div id="matchLog" class="overflow-y-auto h-60"></div>
+        <button id="endMatchBtn" onclick="endMatch()">Fine Partita</button>
     </div>
 
-    <script src="script.js"></script>
+    <div class="end-message-container" id="endMessageContainer" style="display: none;">
+        <h2 id="endMessage"></h2>
+        <button onclick="resetGame()">Nuova Partita</button>
+    </div>
+
+    <script src="main.js" defer></script>
 </body>
 </html>
