@@ -1,18 +1,33 @@
+// Aspetta che la pagina sia completamente caricata
 document.addEventListener('DOMContentLoaded', () => {
-    // Corretti i selettori degli ID per combaciare perfettamente con l'HTML
-    document.getElementById('startGameBtn').onclick = startGame;
-    document.getElementById('startMatch').onclick = startMatchGara;
-    document.getElementById('endMatchBtn').onclick = endMatch;
+    const startBtn = document.getElementById('startGameBtn') || document.getElementById('startGame');
+    if (startBtn) {
+        startBtn.onclick = startGame;
+    }
+
+    const startMatchBtn = document.getElementById('startMatch');
+    if (startMatchBtn) {
+        startMatchBtn.onclick = startMatchGara;
+    }
+
+    const endBtn = document.getElementById('endMatchBtn');
+    if (endBtn) {
+        endBtn.onclick = endMatch;
+    }
 });
 
 function startGame() {
-    document.getElementById('homeContainer').style.display = 'none';
-    document.getElementById('gameContainer').style.display = 'flex'; // Usiamo flex per seguire il tuo CSS
+    const home = document.getElementById('homeContainer');
+    const game = document.getElementById('gameContainer');
+    if (home) home.style.display = 'none';
+    if (game) game.style.display = 'flex';
 }
 
 function addPlayer(team) {
     const playerNameInput = team === 1 ? document.getElementById('playerName1') : document.getElementById('playerName2');
     const grid = team === 1 ? document.getElementById('team1Players') : document.getElementById('team2Players');
+
+    if (!playerNameInput || !grid) return;
 
     if (!playerNameInput.value.trim()) {
         alert('Inserisci un nome per il giocatore!');
@@ -25,14 +40,16 @@ function addPlayer(team) {
         playerDiv.textContent = `${grid.children.length + 1}. ${playerNameInput.value}`;
         grid.appendChild(playerDiv);
 
-        // Pulisce l'input per il prossimo inserimento
         playerNameInput.value = '';
 
-        // Controlla se entrambe le squadre hanno raggiunto gli 11 titolari
         const grid1 = document.getElementById('team1Players');
         const grid2 = document.getElementById('team2Players');
-        if (grid1.children.length === 11 && grid2.children.length === 11) {
-            document.getElementById('startMatch').disabled = false;
+        const startMatchBtn = document.getElementById('startMatch');
+        
+        if (grid1 && grid2 && startMatchBtn) {
+            if (grid1.children.length === 11 && grid2.children.length === 11) {
+                startMatchBtn.disabled = false;
+            }
         }
     } else {
         alert('Non puoi aggiungere più di 11 giocatori!');
@@ -40,20 +57,23 @@ function addPlayer(team) {
 }
 
 function startMatchGara() {
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('matchContainer').style.display = 'flex';
+    const gameContainer = document.getElementById('gameContainer');
+    const matchContainer = document.getElementById('matchContainer');
+    if (gameContainer) gameContainer.style.display = 'none';
+    if (matchContainer) matchContainer.style.display = 'flex';
 
-    // Recupera i valori inseriti, se vuoti mette un default
-    const team1Name = document.getElementById('playerName1').value || "Squadra Casa";
-    const team2Name = document.getElementById('playerName2').value || "Squadra Ospiti";
+    const p1Input = document.getElementById('playerName1');
+    const p2Input = document.getElementById('playerName2');
+    const team1Name = p1Input && p1Input.value ? p1Input.value : "Squadra Casa";
+    const team2Name = p2Input && p2Input.value ? p2Input.value : "Squadra Ospiti";
 
-    document.getElementById('team1Name').textContent = team1Name;
-    document.getElementById('team2Name').textContent = team2Name;
+    const t1Label = document.getElementById('team1Name');
+    const t2Label = document.getElementById('team2Name');
+    if (t1Label) t1Label.textContent = team1Name;
+    if (t2Label) t2Label.textContent = team2Name;
 
-    // Simulazione testuale della partita minuto per minuto
     let matchLogText = '';
     for (let minute = 0; minute <= 90; minute++) {
-        // Ogni tanto succede un evento interessante (circa il 30% delle volte) o nei minuti salienti
         if (minute === 0) {
             matchLogText += `0' - Fischio d'inizio! Le squadre si studiano sul terreno di gioco.\n`;
         } else if (minute === 90) {
@@ -63,29 +83,40 @@ function startMatchGara() {
         }
     }
 
-    document.getElementById('matchLog').textContent = matchLogText;
+    const logBox = document.getElementById('matchLog');
+    if (logBox) {
+        logBox.textContent = matchLogText;
+    }
 }
 
 function endMatch() {
     const result = Math.random() < 0.5 ? 'Vittoria Epica in casa!' : 'Sconfitta di misura fuori casa...';
-    document.getElementById('endMessageContainer').style.display = 'flex';
-    document.getElementById('endMessage').textContent = `Partita Conclusa: ${result}`;
-    document.getElementById('matchContainer').style.display = 'none';
+    const endContainer = document.getElementById('endMessageContainer');
+    const endMsg = document.getElementById('endMessage');
+    const matchContainer = document.getElementById('matchContainer');
+
+    if (endContainer) endContainer.style.display = 'flex';
+    if (endMsg) endMsg.textContent = `Partita Conclusa: ${result}`;
+    if (matchContainer) matchContainer.style.display = 'none';
 }
 
 function resetGame() {
-    document.getElementById('homeContainer').style.display = 'flex';
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('matchContainer').style.display = 'none';
-    document.getElementById('endMessageContainer').style.display = 'none';
+    const home = document.getElementById('homeContainer');
+    const game = document.getElementById('gameContainer');
+    const match = document.getElementById('matchContainer');
+    const end = document.getElementById('endMessageContainer');
 
-    // Reset completo
-    document.getElementById('playerName1').value = '';
-    document.getElementById('playerName2').value = '';
-    document.getElementById('team1Players').innerHTML = '';
-    document.getElementById('team2Players').innerHTML = '';
-    document.getElementById('matchLog').textContent = '';
-    document.getElementById('startMatch').disabled = true;
+    if (home) home.style.display = 'flex';
+    if (game) game.style.display = 'none';
+    if (match) match.style.display = 'none';
+    if (end) end.style.display = 'none';
+
+    if (document.getElementById('playerName1')) document.getElementById('playerName1').value = '';
+    if (document.getElementById('playerName2')) document.getElementById('playerName2').value = '';
+    if (document.getElementById('team1Players')) document.getElementById('team1Players').innerHTML = '';
+    if (document.getElementById('team2Players')) document.getElementById('team2Players').innerHTML = '';
+    if (document.getElementById('matchLog')) document.getElementById('matchLog').textContent = '';
+    if (document.getElementById('startMatch')) document.getElementById('startMatch').disabled = true;
 }
 
 function getRandomEvent(team1Name, team2Name) {
@@ -99,6 +130,5 @@ function getRandomEvent(team1Name, team2Name) {
         `Calcio di rigore assegnato! Tensione altissima in campo.`,
         `Il pallone finisce clamorosamente fuori oltre la recinzione dello stadio!`
     ];
-
     return events[Math.floor(Math.random() * events.length)];
 }
